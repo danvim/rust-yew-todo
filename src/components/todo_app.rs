@@ -1,9 +1,10 @@
 use yew::prelude::*;
 use yew_functional::*;
 
-use super::todo_entry::{TodoEntry};
-
-use crate::components::todo_app::TodoAction::Insert;
+use super::{
+    todo_entry::TodoEntry,
+    todo_app::TodoAction::Insert
+};
 
 #[derive(Clone, PartialEq)]
 pub struct Todo {

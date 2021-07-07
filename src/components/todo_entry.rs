@@ -1,6 +1,7 @@
 use yew::prelude::*;
 use yew_functional::*;
-use crate::components::todo_app::{Todo, TodoAction};
+
+use super::todo_app::{Todo, TodoAction};
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct TodoEntryProps {
