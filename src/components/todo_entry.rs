@@ -23,7 +23,7 @@ pub fn todo_entry(props: &TodoEntryProps) -> Html {
             on_change.emit(TodoAction::Edit(Todo {
                 task: change.value,
                 ..todo.clone()
-            }))
+            }));
         })
     };
 
@@ -34,7 +34,7 @@ pub fn todo_entry(props: &TodoEntryProps) -> Html {
             on_change.emit(TodoAction::Edit(Todo {
                 is_done: !todo.is_done,
                 ..todo.clone()
-            }))
+            }));
         })
     };
 
@@ -45,11 +45,19 @@ pub fn todo_entry(props: &TodoEntryProps) -> Html {
         })
     };
 
+    let insert_todo = {
+        let on_change = on_change.clone();
+        Callback::from(move |_| {
+            on_change.emit(TodoAction::Insert);
+        })
+    };
+
     html! {
         <div>
             <input oninput=content_update value=todo.task.clone() />
             <input type="checkbox" checked=todo.is_done onclick=toggle_done />
             <button onclick=delete_todo>{ "x" }</button>
+            <button onclick=insert_todo>{ "+" }</button>
         </div>
     }
 }

@@ -37,21 +37,15 @@ pub fn todo_app() -> Html {
             match action {
                 TodoAction::Insert => {
                     log::info!("Inserted");
-                    let mut new_todos = (*todos).clone();
-                    new_todos.insert(i, Todo::new());
-                    todos.set(new_todos);
+                    todos.set([&(*todos)[0..i], &[Todo::new()][..], &(*todos)[i..]].concat());
                 }
                 TodoAction::Edit(todo) => {
                     log::info!("Edited");
-                    let mut new_todos = (*todos).clone();
-                    new_todos[i] = todo;
-                    todos.set(new_todos);
+                    todos.set([&(*todos)[0..i], &[todo][..], &(*todos)[i+1..]].concat());
                 }
                 TodoAction::Delete => {
                     log::info!("Deleted");
-                    let mut new_todos = (*todos).clone();
-                    new_todos.remove(i);
-                    todos.set(new_todos);
+                    todos.set([&(*todos)[0..i], &(*todos)[i+1..]].concat());
                 }
             }
         }
@@ -59,12 +53,12 @@ pub fn todo_app() -> Html {
 
     let todo_nodes = (*todos).iter().enumerate().map(|(i, todo)| {
         let on_action = {
-            let on_todo_action = on_todo_action.clone();
+            let on_todo_action = (&on_todo_action).clone();
             Callback::from(move |action: TodoAction| on_todo_action(i, action))
         };
 
         html! {
-            <TodoEntry todo=(*todo).clone() on_change=on_action />
+            <TodoEntry todo=todo.clone() on_change=on_action />
         }
     });
 
