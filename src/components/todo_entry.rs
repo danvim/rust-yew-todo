@@ -53,11 +53,11 @@ pub fn todo_entry(props: &TodoEntryProps) -> Html {
     };
 
     html! {
-        <div>
-            <input oninput=content_update value=todo.task.clone() />
+        <div class="todo-entry">
+            <input type="text" oninput=content_update value=todo.task.clone() />
             <input type="checkbox" checked=todo.is_done onclick=toggle_done />
-            <button onclick=delete_todo>{ "x" }</button>
-            <button onclick=insert_todo>{ "+" }</button>
+            <button class="circle" onclick=delete_todo>{ "×" }</button>
+            <button class="circle" onclick=insert_todo>{ "+" }</button>
         </div>
     }
 }

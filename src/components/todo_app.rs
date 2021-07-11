@@ -1,22 +1,25 @@
+use uuid::Uuid;
 use yew::prelude::*;
 use yew_functional::*;
 
 use super::{
-    todo_entry::TodoEntry,
-    todo_app::TodoAction::Insert
+    todo_app::TodoAction::Insert,
+    todo_entry::TodoEntry
 };
 
 #[derive(Clone, PartialEq)]
 pub struct Todo {
     pub is_done: bool,
     pub task: String,
+    pub id: Uuid,
 }
 
 impl Todo {
     pub fn new() -> Todo {
         Todo {
             is_done: false,
-            task: String::new()
+            task: String::new(),
+            id: Uuid::new_v4()
         }
     }
 }
@@ -57,8 +60,10 @@ pub fn todo_app() -> Html {
             Callback::from(move |action: TodoAction| on_todo_action(i, action))
         };
 
+        let key = (*todo).id.to_string();
+
         html! {
-            <TodoEntry todo=todo.clone() on_change=on_action />
+            <TodoEntry key=key todo=todo.clone() on_change=on_action />
         }
     });
 
@@ -75,9 +80,10 @@ pub fn todo_app() -> Html {
 
 
     html! {
-        <>
+        <div class="container app">
+            <h1>{ "Rust Yew Todo App" }</h1>
             { for todo_nodes }
             <button onclick=add_last>{ "Add task" }</button>
-        </>
+        </div>
     }
 }

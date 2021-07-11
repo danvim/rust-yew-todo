@@ -14,5 +14,5 @@ fn app() -> Html {
 
 fn main() {
     wasm_logger::init(wasm_logger::Config::new(log::Level::Debug));
-    yew::start_app::<FunctionComponent<app>>();
+    yew::start_app::<App>();
 }

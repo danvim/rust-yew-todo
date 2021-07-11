@@ -1,0 +1,77 @@
+@import "../colors"
+
+$bd: 4px
+$border-radius: 8px
+$blur: 8px
+$hover-bg: darken($bg, 1.5%)
+$active-bg: darken($bg, 3%)
+
+@mixin transition($time: 0.2s)
+  transition: $time all ease
+
+@mixin nm-shadow($transparency, $inverted: false, $bd: $bd, $blur: $blur)
+  $bd: if($inverted, -$bd, $bd)
+  $shadow-color: mix($bg, $shadow, $weight: $transparency)
+  $light-color: mix($bg, $light, $weight: $transparency)
+  box-shadow: #{$bd} #{$bd} $blur $shadow-color, #{-$bd} #{-$bd} $blur $light-color, inset #{-$bd} #{-$bd} $blur $shadow-color, inset #{$bd} #{$bd} $blur $light-color
+
+@mixin nm
+  +nm-shadow(85%)
+  background-color: $bg
+  color: $text
+
+  &:hover
+    +nm-shadow(90%)
+    background-color: $hover-bg
+    color: darken($text, 15%)
+
+  &:active
+    +nm-shadow(85%, true)
+    background-color: $active-bg
+    color: $text-dark
+
+input, button
+  +transition
+  border-radius: $border-radius
+  font-family: Arial, sans-serif
+  font-size: 1rem
+  border: none
+  padding: 0.5rem 1rem
+
+button
+  +nm
+
+  &.circle
+    width: 2rem
+    height: 2rem
+    display: flex
+    justify-content: center
+    align-items: center
+    font-size: 2rem
+    padding: 0
+    border-radius: 1rem
+
+input
+  box-shadow: inset 0 0 0 4px transparentize($text, 0.8)
+  background-color: transparent
+  color: $text-dark
+  min-width: 0
+
+  &:focus, &:focus-visible
+    border-width: 0
+    outline: none !important
+    +nm-shadow(85%, true, 2px, 4px)
+    background-color: $active-bg
+
+input[type=checkbox]
+  appearance: none
+  box-shadow: inset 0 0 0 4px transparentize($text, 0.8)
+  padding: 0.6rem
+  position: relative
+  width: 0
+  height: 0
+
+  &:checked
+    background-color: $primary
+    +nm-shadow(85%, true, 2px, 4px)
+

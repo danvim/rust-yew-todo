@@ -10,3 +10,4 @@ yew = { git = "https://github.com/yewstack/yew" }
 yew-functional = { git = "https://github.com/yewstack/yew" }
 wasm-logger = "0.1"
 log = "0.4"
+uuid = { version = "0.8", features = ["wasm-bindgen", "v4"] }
