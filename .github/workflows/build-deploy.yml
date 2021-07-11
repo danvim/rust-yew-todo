@@ -1,0 +1,45 @@
+name: Build & Deploy
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+      - uses: actions-rs/cargo@v1
+        with:
+          args: --release --all-features
+      - run: cargo install trunk wasm-bindgen-cli
+        name: Install Trunk CLI
+      - run: trunk build --release
+        name: Build webpage
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-files
+          path: ./dist
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-files
+          path: ./dist
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
