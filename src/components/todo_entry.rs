@@ -17,12 +17,12 @@ pub fn todo_entry(props: &TodoEntryProps) -> Html {
     } = props;
 
     let content_update = {
-        let todo = todo.clone();
+        let is_done = todo.is_done;
         let on_change = on_change.clone();
-        Callback::from(move |change: InputData| {
+        Callback::once(move |change: InputData| {
             on_change.emit(TodoAction::Edit(Todo {
                 task: change.value,
-                ..todo.clone()
+                is_done
             }));
         })
     };
@@ -30,7 +30,7 @@ pub fn todo_entry(props: &TodoEntryProps) -> Html {
     let toggle_done = {
         let todo = todo.clone();
         let on_change = on_change.clone();
-        Callback::from(move |_| {
+        Callback::once(move |_| {
             on_change.emit(TodoAction::Edit(Todo {
                 is_done: !todo.is_done,
                 ..todo.clone()
@@ -40,14 +40,14 @@ pub fn todo_entry(props: &TodoEntryProps) -> Html {
 
     let delete_todo = {
         let on_change = on_change.clone();
-        Callback::from(move |_| {
+        Callback::once(move |_| {
             on_change.emit(TodoAction::Delete)
         })
     };
 
     let insert_todo = {
         let on_change = on_change.clone();
-        Callback::from(move |_| {
+        Callback::once(move |_| {
             on_change.emit(TodoAction::Insert);
         })
     };
